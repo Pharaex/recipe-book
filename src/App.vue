@@ -2,11 +2,6 @@
   <Homepage />
 </template>
 
-<script>
+<script setup>
 import Homepage from "./views/Homepage.vue";
-
-export default {
-  name: "Homepage",
-  components: { Homepage },
-};
 </script>

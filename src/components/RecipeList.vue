@@ -1,13 +1,12 @@
 <template>
   <div>
-    <p></p>
-    <p></p>
-    <p></p>
+    <div v-for="recipe in recipes" :key="recipe.id">
+      <p>{{ recipe.title }}</p>
+    </div>
   </div>
 </template>
-<script setup>
-import { useMainStore } from "@/stores/mainStore";
 
-const mainStore = useMainStore();
+<script setup>
+const recipes = defineProps(["recipes"]);
 </script>
 <style></style>
