@@ -16,7 +16,18 @@ export const useMainStore = defineStore("recipes", () => {
           name: "Pancetta",
           quantity: "100g",
         },
-        // Add more ingredients as needed
+        {
+          name: "Eggs",
+          quantity: "2",
+        },
+        {
+          name: "Parmesan Cheese",
+          quantity: "1/2 cup",
+        },
+        {
+          name: "Black Pepper",
+          quantity: "1/2 teaspoon",
+        },
       ],
       instructions: [
         "Boil water in a large pot.",
@@ -33,7 +44,7 @@ export const useMainStore = defineStore("recipes", () => {
       cuisine: "Italian",
       course: "Main Course",
       difficulty: "Intermediate",
-      image: "spaghetti_carbonara.jpg",
+      image: "Spaghetti-Carbonara.jpg",
       tags: ["pasta", "italian", "carbonara"],
       favorite: false,
     },
@@ -50,8 +61,28 @@ export const useMainStore = defineStore("recipes", () => {
           name: "Fettuccine",
           quantity: "8 oz",
         },
-        // Add more ingredients as needed
+        {
+          name: "Butter",
+          quantity: "4 tablespoons",
+        },
+        {
+          name: "Heavy Cream",
+          quantity: "1 cup",
+        },
+        {
+          name: "Parmesan Cheese",
+          quantity: "1/2 cup",
+        },
+        {
+          name: "Salt",
+          quantity: "1/2 teaspoon",
+        },
+        {
+          name: "Black Pepper",
+          quantity: "1/4 teaspoon",
+        },
       ],
+
       instructions: [
         "Season chicken with salt and pepper.",
         "Cook chicken in a pan until browned and cooked through.",
@@ -67,7 +98,7 @@ export const useMainStore = defineStore("recipes", () => {
       cuisine: "Italian",
       course: "Main Course",
       difficulty: "Intermediate",
-      image: "chicken_alfredo.jpg",
+      image: "chicken-Alfredo.jpg",
       tags: ["pasta", "italian", "alfredo"],
       favorite: false,
     },
@@ -84,7 +115,22 @@ export const useMainStore = defineStore("recipes", () => {
           name: "Pizza Sauce",
           quantity: "1/2 cup",
         },
-        // Add more ingredients as needed
+        {
+          name: "Mozzarella Cheese",
+          quantity: "2 cups, shredded",
+        },
+        {
+          name: "Toppings (e.g., pepperoni, bell peppers, mushrooms)",
+          quantity: "As needed",
+        },
+        {
+          name: "Olive Oil",
+          quantity: "2 tablespoons",
+        },
+        {
+          name: "Salt",
+          quantity: "1/2 teaspoon",
+        },
       ],
       instructions: [
         "Preheat your oven to the highest temperature.",
@@ -100,14 +146,14 @@ export const useMainStore = defineStore("recipes", () => {
       cuisine: "Italian",
       course: "Main Course",
       difficulty: "Beginner",
-      image: "homemade_pizza.jpg",
+      image: "Homemade-Pizza.jpg",
       tags: ["pizza", "italian", "homemade"],
       favorite: false,
     },
     {
       id: 4,
       title: "Chocolate Chip Cookies",
-      description: "Classic homemade chocolate chip cookies",
+      description: "Mouth-melting buttery cookies like grandma used to make!",
       ingredients: [
         {
           name: "All-Purpose Flour",
@@ -117,8 +163,36 @@ export const useMainStore = defineStore("recipes", () => {
           name: "Chocolate Chips",
           quantity: "2 cups",
         },
-        // Add more ingredients as needed
+        {
+          name: "Butter",
+          quantity: "1 cup, softened",
+        },
+        {
+          name: "Granulated Sugar",
+          quantity: "3/4 cup",
+        },
+        {
+          name: "Brown Sugar",
+          quantity: "3/4 cup",
+        },
+        {
+          name: "Eggs",
+          quantity: "2",
+        },
+        {
+          name: "Vanilla Extract",
+          quantity: "1 teaspoon",
+        },
+        {
+          name: "Baking Soda",
+          quantity: "1 teaspoon",
+        },
+        {
+          name: "Salt",
+          quantity: "1/2 teaspoon",
+        },
       ],
+
       instructions: [
         "Preheat your oven to 350°F (175°C).",
         "In a bowl, cream together butter and sugars until smooth.",
@@ -134,7 +208,7 @@ export const useMainStore = defineStore("recipes", () => {
       cuisine: "American",
       course: "Dessert",
       difficulty: "Beginner",
-      image: "chocolate_chip_cookies.jpg",
+      image: "chocolate-chip-cookies.jpg",
       tags: ["cookies", "dessert", "chocolate"],
       favorite: false,
     },
@@ -151,8 +225,32 @@ export const useMainStore = defineStore("recipes", () => {
           name: "Mixed Vegetables",
           quantity: "2 cups",
         },
-        // Add more ingredients as needed
+        {
+          name: "Soy Sauce",
+          quantity: "2 tablespoons",
+        },
+        {
+          name: "Honey",
+          quantity: "2 tablespoons",
+        },
+        {
+          name: "Fresh Ginger",
+          quantity: "1 teaspoon, minced",
+        },
+        {
+          name: "Garlic",
+          quantity: "2 cloves, minced",
+        },
+        {
+          name: "Cooking Oil",
+          quantity: "2 tablespoons",
+        },
+        {
+          name: "Rice or Noodles",
+          quantity: "As needed (for serving)",
+        },
       ],
+
       instructions: [
         "Cut chicken into bite-sized pieces and stir-fry until cooked.",
         "Add mixed vegetables and stir-fry for a few minutes.",
@@ -167,11 +265,26 @@ export const useMainStore = defineStore("recipes", () => {
       cuisine: "Asian",
       course: "Main Course",
       difficulty: "Easy",
-      image: "chicken_stir_fry.jpg",
+      image: "Chicken-Stir-Fry.jpg",
       tags: ["stir-fry", "chicken", "healthy"],
       favorite: false,
     },
   ]);
 
-  return { recipes };
+  const favoriteText = ref(false);
+
+  const toggleFavorite = (recipe) => {
+    const targetRecipe = recipes.value.find((c) => c.id === recipe.id);
+    if (targetRecipe) {
+      targetRecipe.favorite = !targetRecipe.favorite;
+    }
+  };
+
+  const filterFavorite = (showFavorites) => {
+    return recipes.value.filter((recipe) =>
+      showFavorites ? recipe.favorite : true
+    );
+  };
+
+  return { recipes, toggleFavorite, filterFavorite, favoriteText };
 });
