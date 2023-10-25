@@ -12,15 +12,15 @@ import { useMainStore } from "@/stores/mainStore";
 import { computed, ref } from "vue";
 
 const mainStore = useMainStore();
-const favoriteText = ref(false);
+const filterTerm = ref(""); // Rename this variable to 'filterTerm'
 
 const filteredRecipes = computed(() => {
-  return favoriteText.value
-    ? mainStore.filterFavorite(favoriteText.value)
+  return filterTerm.value
+    ? mainStore.filterFavorite(filterTerm.value)
     : mainStore.recipes;
 });
 
 const filteredFavorite = (showFavorites) => {
-  favoriteText.value = showFavorites;
+  filterTerm.value = showFavorites; // Update filterTerm based on user interaction
 };
 </script>

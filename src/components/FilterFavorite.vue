@@ -8,16 +8,17 @@
 <script setup>
 import { ref, defineProps, defineEmits } from "vue";
 
-const filterFav = ref("");
-const favoriteText = defineProps(["favoriteText"]);
+const filterTerm = ref(""); // Use the same name 'filterTerm'
+
 const emits = defineEmits(["applyFilterFav"]);
 
 const applyFilterFav = () => {
-  emits("applyFilterFav", filterFav.value); // Emit the filterFav value
+  filterTerm.value = true; // Set filterTerm to true when filtering
+  emits("applyFilterFav", filterTerm.value);
 };
 
 const clearFilterFav = () => {
-  filterFav.value = "";
-  emits("applyFilterFav", filterFav.value);
+  filterTerm.value = false; // Set filterTerm to false when clearing the filter
+  emits("applyFilterFav", filterTerm.value);
 };
 </script>

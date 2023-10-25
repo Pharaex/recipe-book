@@ -13,8 +13,9 @@
 
 <script setup>
 import { useMainStore } from "@/stores/mainStore";
+import { computed } from "vue";
 
-const props = defineProps(["recipes"]);
+const props = defineProps(["recipes", "favoriteText"]);
 const imageBasePath = "/assets";
 
 const mainStore = useMainStore();
@@ -22,6 +23,12 @@ const mainStore = useMainStore();
 const getRecipeImageUrl = (imageName) => {
   return `${imageBasePath}/${imageName}`;
 };
+
+const filteredRecipes = computed(() => {
+  return filterActive.value
+    ? mainStore.filterFavorite(filterActive.value)
+    : mainStore.recipes;
+});
 
 const toggleFavorite = (recipe) => {
   mainStore.toggleFavorite(recipe);
