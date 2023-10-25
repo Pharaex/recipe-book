@@ -12,7 +12,7 @@ import { useMainStore } from "@/stores/mainStore";
 import { computed, ref } from "vue";
 
 const mainStore = useMainStore();
-let favoriteText = ref(false);
+const favoriteText = ref(false);
 
 const filteredRecipes = computed(() => {
   return favoriteText.value

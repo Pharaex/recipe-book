@@ -6,19 +6,18 @@
 </template>
 
 <script setup>
-import { ref, defineEmits, defineProps } from "vue";
+import { ref, defineProps, defineEmits } from "vue";
 
 const filterFav = ref("");
-
 const favoriteText = defineProps(["favoriteText"]);
 const emits = defineEmits(["applyFilterFav"]);
 
 const applyFilterFav = () => {
-  emits("applyFilterFav", filterFav.value);
+  emits("applyFilterFav", filterFav.value); // Emit the filterFav value
 };
 
 const clearFilterFav = () => {
-  filterFav.value = ""; // Use .value to update ref
+  filterFav.value = "";
   emits("applyFilterFav", filterFav.value);
 };
 </script>
