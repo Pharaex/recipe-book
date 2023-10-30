@@ -274,9 +274,11 @@ export const useMainStore = defineStore("recipes", () => {
   const favoriteText = ref(false);
 
   const toggleFavorite = (recipe) => {
-    const targetRecipe = recipes.value.find((c) => c.id === recipe.id);
-    if (targetRecipe) {
-      targetRecipe.favorite = !targetRecipe.favorite;
+    const index = recipes.value.findIndex((c) => c.id === recipe.id);
+    if (index !== -1) {
+      recipes.value[index].favorite = !recipes.value[index].favorite;
+      // Replace the entire recipe object to ensure Vue's reactivity system can track the change
+      recipes.value.splice(index, 1, { ...recipes.value[index] });
     }
   };
 
