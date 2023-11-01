@@ -26,7 +26,9 @@ const getRecipeImageUrl = (imageName) => {
 };
 
 const filteredRecipes = computed(() => {
-  return mainStore.filterFavorite(true);
+  return filterActive.value
+    ? mainStore.filterFavorite(filterActive.value)
+    : mainStore.recipes;
 });
 
 const toggleFavorite = (recipe) => {

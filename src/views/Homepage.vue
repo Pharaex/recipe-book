@@ -4,26 +4,23 @@
       <button @click="applyFilterFav">Show Favorites Only</button>
       <button @click="clearFilterFav">Remove Filter</button>
     </div>
-    <RecipeList
-      :recipes="filteredRecipes"
-      @favorite-toggled="handleFavoriteToggled"
-    />
+    <RecipeList :recipes="filteredRecipes" />
   </div>
 </template>
 
 <script setup>
 import RecipeList from "@/components/RecipeList.vue";
 import { useMainStore } from "@/stores/mainStore";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 
 const mainStore = useMainStore();
-const filterTerm = ref("");
+const filterTerm = ref(false);
 
 const filteredRecipes = computed(() => {
   return filterTerm.value
     ? mainStore.filterFavorite(filterTerm.value)
     : mainStore.recipes;
-}, [mainStore.recipes]);
+});
 
 const applyFilterFav = () => {
   filterTerm.value = true; // Set filterTerm to true when filtering
@@ -33,17 +30,14 @@ const clearFilterFav = () => {
   filterTerm.value = false; // Set filterTerm to false when clearing the filter
 };
 
-const handleFavoriteToggled = (recipe) => {
-  mainStore.toggleFavorite(recipe);
+watch(
+  () => mainStore.recipes.map((recipe) => recipe.favorite),
+  (favorites) => {
+    const atLeastOneFavorite = favorites.some((favorite) => favorite);
 
-  const allNotFavorited = mainStore.recipes.value.every(
-    (recipe) => !recipe.favorite
-  );
-
-  if (allNotFavorited) {
-    filterTerm.value = false;
-  } else {
-    filterTerm.value = !filterTerm.value;
+    if (!atLeastOneFavorite) {
+      filterTerm.value = false;
+    }
   }
-};
+);
 </script>

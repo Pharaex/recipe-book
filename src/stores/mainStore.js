@@ -277,8 +277,6 @@ export const useMainStore = defineStore("recipes", () => {
     const index = recipes.value.findIndex((c) => c.id === recipe.id);
     if (index !== -1) {
       recipes.value[index].favorite = !recipes.value[index].favorite;
-      // Replace the entire recipe object to ensure Vue's reactivity system can track the change
-      recipes.value.splice(index, 1, { ...recipes.value[index] });
     }
   };
 
@@ -288,5 +286,38 @@ export const useMainStore = defineStore("recipes", () => {
     );
   };
 
-  return { recipes, toggleFavorite, filterFavorite, favoriteText };
+  const userRecipes = ref([]);
+
+  const addUserRecipe = (formData) => {
+    const newRecipe = {
+      // Construct the new recipe using the formData received
+      id: userRecipes.value.length + 1, // Assigning a new unique ID (should be improved for a real app)
+      title: formData.title,
+      description: formData.description,
+      ingredients: formData.ingredients,
+      instructions: formData.instructions,
+      prepTime: formData.prepTime,
+      cookTime: formData.cookTime,
+      totalTime: formData.totalTime,
+      servings: formData.servings,
+      cuisine: formData.cuisine,
+      course: formData.course,
+      difficulty: formData.difficulty,
+      tags: formData.tags,
+      favorite: false, // Set default favorite to false for a new user-added recipe
+      // Additional properties based on your requirements
+      image: "", // Placeholder for image property
+    };
+
+    userRecipes.value.push(newRecipe); // Add the new user recipe to the userRecipes array
+  };
+
+  return {
+    recipes,
+    toggleFavorite,
+    filterFavorite,
+    favoriteText,
+    addUserRecipe,
+    userRecipes,
+  };
 });
