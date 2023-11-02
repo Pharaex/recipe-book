@@ -1,22 +1,25 @@
 <template>
   <div>
     <form @submit.prevent="submitForm">
-      <label for="title">Title</label>
-      <input
-        v-model="formData.title"
-        type="text"
-        name="title"
-        placeholder="Title"
-      />
-      <label for="description">Description</label>
-      <input
-        v-model="formData.description"
-        type="text"
-        name="description"
-        placeholder="Description"
-      />
-      <label for="ingredients">Ingredients</label>
-      <div v-for="(ingredient, index) in formData.ingredients" :key="index">
+      <label
+        >Title
+        <input
+          v-model="formData.title"
+          type="text"
+          name="title"
+          placeholder="Title"
+        />
+      </label>
+      <label
+        >Description
+        <input
+          v-model="formData.description"
+          type="text"
+          name="description"
+          placeholder="Description"
+        />
+      </label>
+      <label v-for="(ingredient, index) in formData.ingredients" :key="index">
         <input
           v-model="ingredient.name"
           type="text"
@@ -30,71 +33,88 @@
           :placeholder="'Quantity ' + (index + 1)"
         />
         <button type="button" @click="removeIngredient(index)">Remove</button>
-      </div>
+      </label>
       <button type="button" @click="addNewIngredient">Add Ingredient</button>
-      <label for="instructions">Instructions</label>
-      <input
-        v-model="formData.instructions"
-        type="text"
-        name="instructions"
-        placeholder="Instructions"
-      />
-      <label for="prepTime">PrepTime</label>
-      <input
-        v-model="formData.prepTime"
-        type="text"
-        name="prepTime"
-        placeholder="PrepTime"
-      />
-      <label for="cookTime">CookTime</label>
-      <input
-        v-model="formData.cookTime"
-        type="text"
-        name="cookTime"
-        placeholder="CookTime"
-      />
-      <label for="totalTime">TotalTime</label>
-      <input
-        v-model="formData.totalTime"
-        type="text"
-        name="totalTime"
-        placeholder="TotalTime"
-      />
-      <label for="servings">Servings</label>
-      <input
-        v-model="formData.servings"
-        type="number"
-        name="servings"
-        placeholder="Servings"
-      />
-      <label for="cuisine">Cuisine</label>
-      <input
-        v-model="formData.cuisine"
-        type="text"
-        name="cuisine"
-        placeholder="Cuisine"
-      />
-      <label for="course">Course</label>
-      <input
-        v-model="formData.course"
-        type="text"
-        name="course"
-        placeholder="Course"
-      />
-      <label for="difficulty">Difficulty</label>
-      <input
-        v-model="formData.difficulty"
-        type="text"
-        name="difficulty"
-        placeholder="Difficulty"
-      />
-      <label for="tags">Tags</label>
-      <input
-        v-model="formData.tags"
-        type="text"
-        name="tags"
-        placeholder="Tags"
-      />
+      <label
+        >Instructions
+        <input
+          v-model="formData.instructions"
+          type="text"
+          name="instructions"
+          placeholder="Instructions"
+        />
+      </label>
+      <label
+        >PrepTime
+        <input
+          v-model="formData.prepTime"
+          @input="calculateTotalTime"
+          type="text"
+          name="prepTime"
+          placeholder="PrepTime"
+        />
+        <span>min</span>
+      </label>
+      <label
+        >CookTime
+        <input
+          v-model="formData.cookTime"
+          @input="calculateTotalTime"
+          type="text"
+          name="cookTime"
+          placeholder="CookTime"
+        />
+        <span>min</span>
+      </label>
+
+      <label
+        >TotalTime
+        <div v-if="formData.showTotalTime">
+          <p>{{ formData.totalTime }} min</p>
+        </div>
+      </label>
+      <label
+        >Servings
+        <input
+          v-model="formData.servings"
+          type="text"
+          name="servings"
+          placeholder="Servings"
+        />
+      </label>
+      <label
+        >Cuisine
+        <input
+          v-model="formData.cuisine"
+          type="text"
+          name="cuisine"
+          placeholder="Cuisine"
+        />
+      </label>
+      <label
+        >Course
+        <input
+          v-model="formData.course"
+          type="text"
+          name="course"
+          placeholder="Course"
+        />
+      </label>
+      <label>Difficulty </label>
+      <select name="difficulty" v-model="formData.difficulty">
+        <option value="Easy">Easy</option>
+        <option value="Medium">Medium</option>
+        <option value="Hard">Hard</option>
+      </select>
+      <label
+        >Tags
+        <input
+          v-model="formData.tags"
+          type="text"
+          name="tags"
+          placeholder="Tags"
+        />
+      </label>
 
       <button type="submit">Submit</button>
     </form>
@@ -104,33 +124,36 @@
 
 <script setup>
 import { useMainStore } from "@/stores/mainStore";
-import { reactive } from "vue";
+import { reactive, onMounted, watch, ref } from "vue";
 
 const formData = reactive({
   title: "",
   description: "",
   ingredients: [{ name: "", quantity: "" }],
   instructions: "",
-  prepTime: "",
-  cookTime: "",
-  totalTime: "",
+  prepTime: 0,
+  cookTime: 0,
+  totalTime: 0,
   servings: "",
   cuisine: "",
   course: "",
   difficulty: "",
   tags: "",
+  showTotalTime: false,
 });
 
 const mainStore = useMainStore();
 
 const submitForm = () => {
-  mainStore.addUserRecipe(formData); // Pass the form data to addUserRecipe method
-  console.log("User Recipes in mainStore:", mainStore.userRecipes.value);
-  resetFormData(); // Reset form data after submission
+  mainStore.addUserRecipe(formData);
+  resetFormData();
 };
 
+onMounted(() => {
+  console.log("User Recipes in mainStore:", mainStore.userRecipes);
+});
+
 const resetFormData = () => {
-  // Reset form data after submission
   for (const key in formData) {
     if (Array.isArray(formData[key])) {
       formData[key] = [];
@@ -147,4 +170,15 @@ const addNewIngredient = () => {
 const removeIngredient = (index) => {
   formData.ingredients.splice(index, 1);
 };
+
+watch(
+  [() => formData.prepTime, () => formData.cookTime],
+  ([newPrepTime, newCookTime]) => {
+    const prep = parseInt(newPrepTime) || 0;
+    const cook = parseInt(newCookTime) || 0;
+
+    formData.totalTime = prep + cook; // Update the totalTime directly
+    formData.showTotalTime = !isNaN(formData.totalTime);
+  }
+);
 </script>

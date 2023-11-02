@@ -290,8 +290,8 @@ export const useMainStore = defineStore("recipes", () => {
 
   const addUserRecipe = (formData) => {
     const newRecipe = {
-      // Construct the new recipe using the formData received
-      id: userRecipes.value.length + 1, // Assigning a new unique ID (should be improved for a real app)
+      id: 1000 + userRecipes.value.length + 1,
+      origin: "user",
       title: formData.title,
       description: formData.description,
       ingredients: formData.ingredients,
@@ -304,9 +304,8 @@ export const useMainStore = defineStore("recipes", () => {
       course: formData.course,
       difficulty: formData.difficulty,
       tags: formData.tags,
-      favorite: false, // Set default favorite to false for a new user-added recipe
-      // Additional properties based on your requirements
-      image: "", // Placeholder for image property
+      favorite: false,
+      image: "",
     };
 
     userRecipes.value.push(newRecipe); // Add the new user recipe to the userRecipes array
