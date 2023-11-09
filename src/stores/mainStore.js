@@ -280,8 +280,21 @@ export const useMainStore = defineStore("recipes", () => {
     }
   };
 
+  const toggleUserFavorite = (recipe) => {
+    const index = userRecipes.value.findIndex((c) => c.id === recipe.id);
+    if (index !== -1) {
+      userRecipes.value[index].favorite = !userRecipes.value[index].favorite;
+    }
+  };
+
   const filterFavorite = (showFavorites) => {
     return recipes.value.filter((recipe) =>
+      showFavorites ? recipe.favorite : true
+    );
+  };
+
+  const filterUserFavorite = (showFavorites) => {
+    return userRecipes.value.filter((recipe) =>
       showFavorites ? recipe.favorite : true
     );
   };
@@ -314,7 +327,9 @@ export const useMainStore = defineStore("recipes", () => {
   return {
     recipes,
     toggleFavorite,
+    toggleUserFavorite,
     filterFavorite,
+    filterUserFavorite,
     favoriteText,
     addUserRecipe,
     userRecipes,

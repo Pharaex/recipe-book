@@ -147,11 +147,8 @@ const mainStore = useMainStore();
 const submitForm = () => {
   mainStore.addUserRecipe(formData);
   resetFormData();
+  alert("Recipe Uploaded!");
 };
-
-onMounted(() => {
-  console.log("User Recipes in mainStore:", mainStore.userRecipes);
-});
 
 const resetFormData = () => {
   for (const key in formData) {

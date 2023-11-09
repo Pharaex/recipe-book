@@ -5,11 +5,13 @@
       <button @click="clearFilterFav">Remove Filter</button>
     </div>
     <RecipeList :recipes="filteredRecipes" />
+    <UserRecipeList :userRecipes="userRecipes" />
   </div>
 </template>
 
 <script setup>
 import RecipeList from "@/components/RecipeList.vue";
+import UserRecipeList from "@/components/UserRecipeList.vue";
 import { useMainStore } from "@/stores/mainStore";
 import { computed, ref, watch } from "vue";
 
@@ -40,4 +42,6 @@ watch(
     }
   }
 );
+
+const userRecipes = computed(() => mainStore.userRecipes);
 </script>
